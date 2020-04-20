@@ -18,10 +18,10 @@ typedef struct listaProfessor {
 
 typedef struct listaDisciplina {
 	long codigo;
-	char curso[20];
-	char nome[20];
+	char curso[35];
+	char nome[40];
 	int cargaHoraria;
-	char preReqs[20][5];
+	char preReqs[40][5];
 	struct listaDisciplina *prox;
 } ListaDisciplina;
 
@@ -40,13 +40,15 @@ ListaAluno *inicializaAluno();
 ListaAluno *alocaAluno(ListaAluno *aluno);
 ListaAluno *cadastraAluno(ListaAluno *aluno, long matricula, char nome[], char curso[]);
 
+void printaListaProfessor(ListaProfessor *professor);
 ListaProfessor *inicializaProfessor();
 ListaProfessor *alocaProfessor(ListaProfessor *professor);
 ListaProfessor *cadastraProfessor(ListaProfessor *professor, long siape, char nome[], char areaAtuacao[], char titulacao[]);
 
+void printaListaDisciplina(ListaDisciplina *disciplina);
 ListaDisciplina *inicializaDisciplina();
 ListaDisciplina *alocaDisciplina(ListaDisciplina *disciplina);
-ListaDisciplina *cadastraDisciplina(ListaDisciplina *disciplina, char curso[], char nome[], int cargaHoraria, char preReqs[][5]);
+ListaDisciplina *cadastraDisciplina(ListaDisciplina *disciplina, long codigo, char curso[], char nome[], int cargaHoraria, char preReqs[][5]);
 
 ListaTurma *inicializaTurma();
 ListaTurma *alocaTurma(ListaTurma *turma);

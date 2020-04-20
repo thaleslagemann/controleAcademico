@@ -59,6 +59,17 @@ ListaAluno *cadastraAluno(ListaAluno *aluno, long matricula, char nome[], char c
 	return p;
 }
 
+void printaListaProfessor(ListaProfessor *professor) {
+	ListaProfessor *p;
+
+	for(p = professor; p != NULL; p = p->prox) {
+		printf("%ld\n", p->siape);
+		printf("%s\n", p->nome);
+		printf("%s\n", p->areaAtuacao);
+		printf("%s\n", p->titulacao);
+	}
+}
+
 // Inicializa a struct Professor vazia;
 ListaProfessor *inicializaProfessor() {
 
@@ -88,6 +99,22 @@ ListaProfessor *cadastraProfessor(ListaProfessor *professor, long siape, char no
 	return p;
 }
 
+void printaListaDisciplina(ListaDisciplina *disciplina) {
+	
+	ListaDisciplina *p;
+	int i;
+
+	for(p = disciplina; p != NULL; p = p->prox) {
+		printf("%ld\n", p->codigo);
+		printf("%s\n", p->curso);
+		printf("%s\n", p->nome);
+		printf("%d\n", p->cargaHoraria);
+		for (i = 0; i < 5; ++i) {
+			if(p->preReqs[0][i] != '\0') printf("%s\n", p->preReqs[i]);
+		}
+	}
+}
+
 // Inicializa a struct Disciplina vazia;
 ListaDisciplina *inicializaDisciplina() {
 
@@ -102,12 +129,13 @@ ListaDisciplina *alocaDisciplina(ListaDisciplina *disciplina) {
 	return disciplina;
 }
 
-ListaDisciplina *cadastraDisciplina(ListaDisciplina *disciplina, char curso[], char nome[], int cargaHoraria, char preReqs[][5]) {
+ListaDisciplina *cadastraDisciplina(ListaDisciplina *disciplina, long codigo, char curso[], char nome[], int cargaHoraria, char preReqs[][5]) {
 
 	ListaDisciplina *p = disciplina;
 
 	p = (ListaDisciplina*) malloc(sizeof(ListaDisciplina));
 
+	p->codigo = codigo;
 	copiaString(curso, p->curso);
 	copiaString(nome, p->nome);
 	p->cargaHoraria = cargaHoraria;
