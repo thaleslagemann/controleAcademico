@@ -32,6 +32,16 @@ typedef struct listaTurma {
 	struct listaTurma *prox;
 } ListaTurma;
 
+typedef struct listaAvaliacao {
+	long matricula;
+	char nome[30];
+	char curso[35];
+	long codDisciplina;
+	long codProfessor;
+	float nota;
+	struct listaAvaliacao *prox;
+} ListaAvaliacao;
+
 void copiaMatrizString(char mat1[][5], char mat2[][5]);
 void copiaString(char string1[], char string2[]);
 
@@ -53,5 +63,11 @@ ListaDisciplina *cadastraDisciplina(ListaDisciplina *disciplina, long codigo, ch
 ListaTurma *inicializaTurma();
 ListaTurma *alocaTurma(ListaTurma *turma);
 ListaTurma *cadastraTurma(ListaTurma *turma, long matricula, char nome[], char curso[]);
+
+void printaNotaAluno(ListaAvaliacao *avaliacao, ListaDisciplina *disciplina, ListaProfessor *professor, long matricula);
+void printaNotas(ListaAvaliacao *avaliacao);
+ListaAvaliacao *inicializaAvaliacao();
+ListaAvaliacao *alocaAvaliacao(ListaAvaliacao *avaliacao);
+ListaAvaliacao *cadastraAvaliacao(ListaAvaliacao *avaliacao, long matricula, char nome[], char curso[], long codDisciplina, long codProfessor, float nota);
 
 #endif

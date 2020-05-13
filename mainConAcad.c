@@ -7,6 +7,7 @@ int main()
 	ListaAluno *aluno;
 	ListaProfessor *professor;
 	ListaDisciplina *disciplina;
+	ListaAvaliacao *avaliacao;
 
 	char preReqs[40][5];
 
@@ -15,19 +16,32 @@ int main()
 	}
 
 	aluno = inicializaAluno();
-	//aluno = alocaAluno(aluno);
 	professor = inicializaProfessor();
-	//professor = alocaProfessor(professor);
 	disciplina = inicializaDisciplina();
-	//disciplina = alocaDisciplina(disciplina);
+	avaliacao = inicializaAvaliacao();
 
 	aluno = cadastraAluno(aluno, 6123, "Thales", "Sistemas de Informacao");
-	professor = cadastraProfessor(professor, 123123, "Robson", "Tecnologia", "PhD");
+	aluno = cadastraAluno(aluno, 5432, "Rogerio", "Sistemas de Informacao");
+	professor = cadastraProfessor(professor, 123123, "Pivetão", "Tecnologia", "PhD");
 	disciplina = cadastraDisciplina(disciplina, 6966, "Sistemas de Informacao", "Laboratorio de programação II", 60, preReqs);
+	avaliacao = cadastraAvaliacao(avaliacao, 6123, "Thales", "Sistemas de Informacao", 6966, 123123, 5.0);
+	avaliacao = cadastraAvaliacao(avaliacao, 5432, "Rogerio", "Sistemas de Informacao", 6966, 123123, 6.0);
 
+	printf("Lista aluno:\n");
 	printaListaAluno(aluno);
+	printf("\n");
+	printf("Lista professor:\n");
 	printaListaProfessor(professor);
+	printf("\n");
+	printf("Lista disciplina:\n");
 	printaListaDisciplina(disciplina);
+	printf("\n");
+	printf("Nota aluno [%d]:\n", 6123);
+	printaNotaAluno(avaliacao, disciplina, professor, 6123);
+	printf("\n");
+	printf("Notas da turma\n");
+	printaNotas(avaliacao);
+	printf("\n");
 
 	return 0;
 }

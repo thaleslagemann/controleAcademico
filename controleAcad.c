@@ -6,9 +6,28 @@ void printaListaAluno(ListaAluno *aluno) {
 	ListaAluno *p;
 
 	for(p = aluno; p != NULL; p = p->prox) {
-		printf("%ld\n", p->matricula);
-		printf("%s\n", p->nome);
-		printf("%s\n", p->curso);
+		printf("[%ld, %s, %s]\n", p->matricula, p->nome, p->curso);
+	}
+}
+
+void printaListaDisciplina(ListaDisciplina *disciplina) {
+	
+	ListaDisciplina *p;
+	int i;
+
+	for(p = disciplina; p != NULL; p = p->prox) {
+		printf("[%ld, %s, %s, %d]\n", p->codigo, p->curso, p->nome, p->cargaHoraria);
+		for (i = 0; i < 5; ++i) {
+			if(p->preReqs[0][i] != '\0') printf("%s\n", p->preReqs[i]);
+		}
+	}
+}
+
+void printaListaProfessor(ListaProfessor *professor) {
+	ListaProfessor *p;
+
+	for(p = professor; p != NULL; p = p->prox) {
+		printf("[%ld, %s, %s, %s]\n", p->siape, p->nome, p->areaAtuacao, p->titulacao);
 	}
 }
 
@@ -49,7 +68,9 @@ ListaAluno *cadastraAluno(ListaAluno *aluno, long matricula, char nome[], char c
 
 	ListaAluno *p = aluno;
 
-	p = (ListaAluno*) malloc(sizeof(ListaAluno));
+
+	p = alocaAluno(p);
+
 
 	p->matricula = matricula;
 	copiaString(nome, p->nome);
@@ -57,17 +78,6 @@ ListaAluno *cadastraAluno(ListaAluno *aluno, long matricula, char nome[], char c
 	p->prox = aluno;
 
 	return p;
-}
-
-void printaListaProfessor(ListaProfessor *professor) {
-	ListaProfessor *p;
-
-	for(p = professor; p != NULL; p = p->prox) {
-		printf("%ld\n", p->siape);
-		printf("%s\n", p->nome);
-		printf("%s\n", p->areaAtuacao);
-		printf("%s\n", p->titulacao);
-	}
 }
 
 // Inicializa a struct Professor vazia;
@@ -88,7 +98,7 @@ ListaProfessor *cadastraProfessor(ListaProfessor *professor, long siape, char no
 
 	ListaProfessor *p = professor;
 
-	p = (ListaProfessor*) malloc(sizeof(ListaProfessor));
+	p = alocaProfessor(p);
 
 	p->siape = siape;
 	copiaString(nome, p->nome);
@@ -97,22 +107,6 @@ ListaProfessor *cadastraProfessor(ListaProfessor *professor, long siape, char no
 	p->prox = professor;
 
 	return p;
-}
-
-void printaListaDisciplina(ListaDisciplina *disciplina) {
-	
-	ListaDisciplina *p;
-	int i;
-
-	for(p = disciplina; p != NULL; p = p->prox) {
-		printf("%ld\n", p->codigo);
-		printf("%s\n", p->curso);
-		printf("%s\n", p->nome);
-		printf("%d\n", p->cargaHoraria);
-		for (i = 0; i < 5; ++i) {
-			if(p->preReqs[0][i] != '\0') printf("%s\n", p->preReqs[i]);
-		}
-	}
 }
 
 // Inicializa a struct Disciplina vazia;
@@ -133,7 +127,7 @@ ListaDisciplina *cadastraDisciplina(ListaDisciplina *disciplina, long codigo, ch
 
 	ListaDisciplina *p = disciplina;
 
-	p = (ListaDisciplina*) malloc(sizeof(ListaDisciplina));
+	p = alocaDisciplina(p);
 
 	p->codigo = codigo;
 	copiaString(curso, p->curso);
@@ -146,15 +140,23 @@ ListaDisciplina *cadastraDisciplina(ListaDisciplina *disciplina, long codigo, ch
 }
 
 ListaTurma *inicializaTurma() {
+
 	return NULL;
 }
 
-ListaTurma *alocaTurma(ListaTurma *turma);
+ListaTurma *alocaTurma(ListaTurma *turma) {
+
+	turma = (ListaTurma*) malloc(sizeof(ListaTurma));
+
+	return turma;
+}
+
 
 ListaTurma *cadastraTurma(ListaTurma *turma, long matricula, char nome[], char curso[]) {
+
 	ListaTurma *p = turma;
 
-	p = (ListaTurma*) malloc(sizeof(ListaTurma));
+	p = alocaTurma(p);
 
 	p->matricula = matricula;
 	copiaString(nome, p->nome);
@@ -162,4 +164,74 @@ ListaTurma *cadastraTurma(ListaTurma *turma, long matricula, char nome[], char c
 	p->prox = turma;
 
 	return p;
+}
+
+ListaAvaliacao *inicializaAvaliacao() {
+
+	return NULL;
+}
+
+ListaAvaliacao *alocaAvaliacao(ListaAvaliacao *avaliacao) {
+
+	avaliacao = (ListaAvaliacao*) malloc(sizeof(ListaAvaliacao));
+
+	return avaliacao;
+}
+
+ListaAvaliacao *cadastraAvaliacao(ListaAvaliacao *avaliacao, long matricula, char nome[], char curso[], long codDisciplina, long codProfessor, float nota) {
+
+	ListaAvaliacao *p = avaliacao;
+
+	p = alocaAvaliacao(p);
+
+	p->matricula = matricula;
+	copiaString(nome, p->nome);
+	copiaString(curso, p->curso);
+	p->codDisciplina = codDisciplina; 
+	p->codProfessor = codProfessor;
+	p->nota = nota;
+	p->prox = avaliacao;
+
+	return p;
+}
+
+void printaNotaAluno(ListaAvaliacao *avaliacao, ListaDisciplina *disciplina, ListaProfessor *professor, long matricula) {
+
+	ListaAvaliacao *av;
+	ListaProfessor *p;
+	ListaDisciplina *d;
+
+	for(av = avaliacao; av->matricula != matricula; av = av->prox) {
+		if(av->prox == NULL) {
+			printf("Matricula não encontrada.\n");
+			return;
+		}
+	}
+
+	for(d = disciplina; d->codigo != av->codDisciplina; d = d->prox) {
+		if(d->prox == NULL) {
+			printf("Disciplina não encontrada.\n");
+			return;
+		}
+	}
+
+	for(p = professor; p->siape != av->codProfessor; p = p->prox) {
+		if(p->prox == NULL) {
+			printf("Professor não encontrado\n");
+			return;
+		}
+	}
+
+	printf("[Nome: %s| Matricula: %ld| Nota: %.2f]\n[Disciplina: %s| Professor: %s]\n", av->nome, av->matricula, av->nota, d->nome, p->nome);
+
+	return;
+}
+
+void printaNotas(ListaAvaliacao *avaliacao) {
+
+	ListaAvaliacao *p = avaliacao;
+
+	for(p = avaliacao; p != NULL; p = p->prox) {
+		printf("[%ld\t%s\t%.2f]\n", p->matricula, p->nome, p->nota);
+	}
 }
